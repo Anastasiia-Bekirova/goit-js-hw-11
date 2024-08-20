@@ -15,14 +15,19 @@ let lightbox = new SimpleLightbox('.gallery a', {
 });
 const searchFormEl = document.querySelector('.js-search-form');
 const galleryEl = document.querySelector('.js-gallery');
+const loaderEl = document.querySelector('.js-loader');
  
 const onSearchFormSubmit = event => {
-  event.preventDefault();
+    loaderEl.classList.remove('is-hidden');
+
+    event.preventDefault();
+    
 
   const searchedValue = searchFormEl.elements.user_query.value;
 
   fetchPhotos(searchedValue)
-    .then(data => {
+      .then(data => {
+       
       if (data.hits.length === 0) {
         iziToast.error({
           message: 'Sorry, there are no images matching your search query. Please try again!',
@@ -39,6 +44,8 @@ const onSearchFormSubmit = event => {
       const galleryCardsTemplate = data.hits.map(imgDetails => createGalleryCardTemplate(imgDetails)).join('');
 
         galleryEl.innerHTML = galleryCardsTemplate;
+        loaderEl.classList.add('is-hidden');
+
 
         lightbox.refresh();
         
