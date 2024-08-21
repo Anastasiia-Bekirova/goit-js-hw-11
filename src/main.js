@@ -18,13 +18,17 @@ const galleryEl = document.querySelector('.js-gallery');
 const loaderEl = document.querySelector('.js-loader');
  
 const onSearchFormSubmit = event => {
-    loaderEl.classList.remove('is-hidden');
+    
 
     event.preventDefault();
     
 
-  const searchedValue = searchFormEl.elements.user_query.value;
+  const searchedValue = searchFormEl.elements.user_query.value.trim();
 
+  if (!searchedValue) {
+    return;
+  }
+loaderEl.classList.remove('is-hidden');
   fetchPhotos(searchedValue)
       .then(data => {
        
@@ -35,7 +39,7 @@ const onSearchFormSubmit = event => {
         });
 
           galleryEl.innerHTML = '';
-         
+         loaderEl.classList.add('is-hidden');
         searchFormEl.reset();
 
         return;
